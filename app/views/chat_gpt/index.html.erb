@@ -1,0 +1,24 @@
+<textarea id="inputField"></textarea>
+<button onclick="askQuestion()">Ask</button>
+<div id="outputField"></div>
+
+<script>
+    async function askQuestion() {
+        const prompt = document.getElementById("inputField").value;
+        const response = await fetch('/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prompt })
+        });
+
+        const data = await response.json();
+        if(response.ok) {
+            document.getElementById("outputField").innerText = data.reply;
+        } else {
+            document.getElementById("outputField").innerText = data.error;
+            console.error(data.error);
+        }
+    }
+</script>
